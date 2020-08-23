@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -189,16 +190,15 @@ namespace ColoringBookPreprocessingGenerator
                 }
 
                 var loadingDialog = new LoadingDialog();
-                var ignoreResult = loadingDialog.ShowAsync();
-
-                await processor.GeneratePreprocessingAsync(preprocessingFile);
+                _ = loadingDialog.ShowAsync();
+                
+                await Task.Run(() => processor.GeneratePreprocessingAsync(preprocessingFile));
 
                 loadingDialog.Hide();
             }
 
             await NotifyUserAsync("Processing Complete");
         }
-
 
         public static async Task NotifyUserAsync(string message)
         {
